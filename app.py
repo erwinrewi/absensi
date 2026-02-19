@@ -117,13 +117,17 @@ def build_report(start_date: date, end_date: date):
     rep = rep.sort_values("full_name").reset_index(drop=True)
     return rep
 
+from datetime import timedelta  # taruh di import atas
+
 def month_range(year: int, month: int):
     start = date(year, month, 1)
     if month == 12:
-        end = date(year + 1, 1, 1) - pd.Timedelta(days=1)
+        next_month = date(year + 1, 1, 1)
     else:
-        end = date(year, month + 1, 1) - pd.Timedelta(days=1)
-    return start, end.to_pydatetime().date()
+        next_month = date(year, month + 1, 1)
+    end = next_month - timedelta(days=1)
+    return start, end
+
 
 def year_range(year: int):
     return date(year, 1, 1), date(year, 12, 31)
@@ -580,3 +584,4 @@ with tab3:
                 "- Data yang disimpan hanya **pengecualian LIBUR**.\n"
                 "- **MASUK = default** untuk semua tanggal di rentang rekap, kecuali ada override LIBUR.\n"
             )
+
